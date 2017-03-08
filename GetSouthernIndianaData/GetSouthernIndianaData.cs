@@ -22,7 +22,7 @@ namespace APCD.AirNow
             String downloadFolder = String.Empty;
             String finalFile = String.Empty;
             String finalFolder = String.Empty;
-            int hoursToGet = 1; // hours to (re)retrieve if this program ran an hour ago
+            int hoursToGet = 4; // hours to (re)retrieve by default
             int hoursToLookBack = 120; // default maximum hours to search back
             bool isOK = false;
             bool isVerbose = false;
@@ -32,7 +32,7 @@ namespace APCD.AirNow
             p.Setup<int>('h', "hoursback")
                 .WithDescription("The number of hours to force (re)download. If the program has NOT run successfully for previous hours, it will download data up to 120 hours back or the specified hours back, whichever is larger.")
                 .Callback(hours => hoursToGet = hours)
-                .SetDefault(1);
+                .SetDefault(4);
 
             p.Setup<string>('u', "baseuri")
                 .WithDescription("The website and folder to download AirNow files from")
@@ -198,6 +198,10 @@ namespace APCD.AirNow
             String fullURL = baseURI + filename;
             String localFile = localPath + filename;
 
+#if DEBUG
+            Console.WriteLine("\nFilename: " + filename);
+#endif
+            
             // Create a new WebClient instance.
             WebClient client = new WebClient();
 
