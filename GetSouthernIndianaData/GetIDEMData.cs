@@ -10,12 +10,12 @@ using Fclp;
 
 namespace APCD.AirNow
 {
-    class GetSouthernIndianaData
+    class GetIDEMData
     {
         static void Main(string[] args)
         {
 
-            #region Set up parameters.
+            #region Parameters
             String airNowFile = String.Empty;
             String errorMessage = String.Empty;
             String baseURI = String.Empty;
@@ -111,6 +111,8 @@ namespace APCD.AirNow
             }
             #endregion
 
+            #region Data file processing
+
             if (isOK)
             {
                 // Check for existing raw files.
@@ -128,9 +130,9 @@ namespace APCD.AirNow
                 }
 
                 int hoursLatest = 1;
-                // The latest data file becomes available about 30 minutes after the hour.
-                if (DateTime.Now.Minute < 30)
-                    hoursLatest = 2;
+                //// The latest data file becomes available about 30 minutes after the hour.
+                //if (DateTime.Now.Minute < 30)
+                //    hoursLatest = 2;
 
                 for (int i = hoursToGet; i >= hoursLatest; i--)
                 {
@@ -189,6 +191,7 @@ namespace APCD.AirNow
                     Console.WriteLine("\nError:" + errorMessage);
                 }
             }
+            #endregion
         }
 
         static String DownloadHourlyDataFile(int hoursAgo, String baseURI, String localPath)
@@ -258,9 +261,12 @@ namespace APCD.AirNow
                     if (File.Exists(outFile))
                         File.Delete(outFile);
                 }
-                catch (Exception)
-                {         
-                    throw;
+                catch (Exception ex)
+                {
+                    if (ex.Message.Contains("Could not find"))
+                        return null;
+                    else
+                        throw ex;
                 }
 
                 if (isOK)
