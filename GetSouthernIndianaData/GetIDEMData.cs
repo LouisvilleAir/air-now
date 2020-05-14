@@ -280,7 +280,7 @@ namespace APCD.AirNow
                         {
                             string[] items = line.Split(_delimiter);
                             String test = items[2].Substring(0, 5); // FIPS state + county
-                            if (test == "18019" || test == "18043") // Clark or Floyd County, Indiana
+                            if (test == "18019" || test == "18043" || test == "84018019" || test == "84018043") // Clark or Floyd County, Indiana
                             {
                                 // For debugging:
                                 //Console.WriteLine("\nOriginal line:\n" + line);
